@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "174589301799",
+    "project_id": "purnimaproject1",
+    "storage_bucket": "purnimaproject1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174589301799:android:4dd751c6ee9873da8caa02",
+        "android_client_info": {
+          "package_name": "com.purnima.firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174589301799-cbqdv7qng7f04f27jikaqdm49svcq6qh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwF_rPu89z6Dx_6htpiDUfwlBhb3uzq3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174589301799-cbqdv7qng7f04f27jikaqdm49svcq6qh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
