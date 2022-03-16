@@ -15,6 +15,7 @@ public class StoryBoard : MonoBehaviour
     public TextMeshProUGUI bytesLabel;
     public Slider progressBar;
     bool paused = true;
+    float lastProgress = 0.0f;
     public static void UnZip(string filePath, byte[] data)
     {
         using (ZipInputStream s = new ZipInputStream(new MemoryStream(data)))
@@ -86,6 +87,10 @@ public class StoryBoard : MonoBehaviour
     {
         if (paused == true)
             return false;
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            return false;
+        }
         Debug.Log("got"+webRequest.GetResponseHeader("Content-Type"));
         if (webRequest.GetResponseHeader("Content-Length") != null)
         {
@@ -94,11 +99,17 @@ public class StoryBoard : MonoBehaviour
 
         float downloadDataProgress = operation.progress * 100;
         progressBar.value = downloadDataProgress / 100;
-        print("Download: " + downloadDataProgress);
-  
+
+        float deltaProgress = operation.progress - lastProgress;
+        float progressPerSec = deltaProgress / Time.deltaTime;
+        float remaingTime = (1 - operation.progress) / progressPerSec;
+        lastProgress = operation.progress;
+
+
         if (webRequest.GetResponseHeader("Content-Length") != null)
         {
             bytesLabel.text = "Downloaded " + (webRequest.downloadedBytes / (1024 * 1024)) + " Kb out of " + (Int32.Parse(webRequest.GetResponseHeader("Content-Length")) / (1024 * 1024)) + " Kb";
+            bytesLabel.text = bytesLabel.text + " Remaining: " + Math.Floor(remaingTime) + " sec";
         }
         return operation.isDone;
    
@@ -120,6 +131,8 @@ public class StoryBoard : MonoBehaviour
             if (webRequest.isNetworkError)
             {
                 Debug.Log(pages[page] + ": Error: " + webRequest.error);
+
+                StartCoroutine(GetRequest(uri, filename));
             }
             else
             {
@@ -130,7 +143,7 @@ public class StoryBoard : MonoBehaviour
 
 
                 File.WriteAllBytes(Application.persistentDataPath + filename, results);
-                bytesLabel.text = bytesLabel.text+ "Saved " + filename + " at " + Application.persistentDataPath;
+                bytesLabel.text = bytesLabel.text+ " Saved " + filename + " at " + Application.persistentDataPath;
 
                 // Debug.Log(webRequest.downloadHandler.text + ":\nReceived: "+ webRequest.responseCode);
                 //  UnZip(path, webRequest.downloadHandler.data);
