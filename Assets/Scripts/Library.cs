@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Library : MonoBehaviour
 {
@@ -11,6 +12,30 @@ public class Library : MonoBehaviour
     public CategoryElement categoryElement;
     public GameObject content;
     // Start is called before the first frame update
+    public void showStory()
+    {
+        SceneManager.LoadScene("StoryBoard");
+       
+    }
+    void OnEnable()
+    {
+      ///  Debug.Log("OnEnable called");
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    // called second
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("OnSceneLoaded: " + scene.name);
+       
+        string url = loadTime.RootUri+"packs/";
+        Package pack = loadTime.Packages[UnityEngine.Random.Range(0, loadTime.Packages.Length)];
+        string filename =pack.Id+".zip";
+        //  Debug.Log("init1" + url + filename);
+        StoryBoard.storyBoardInstance.nameLabel.text=""+ pack.Title;
+        StoryBoard.storyBoardInstance.init(url+ filename, pack.Id);
+    }
+   
     public void CreateLibrary(string bookShelfData, string loadTimeData)
     {
         bookShelf= JsonUtility.FromJson<BookShelf>(bookShelfData);

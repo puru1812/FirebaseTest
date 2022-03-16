@@ -22,5 +22,6 @@ public class StoryElement : MonoBehaviour
         yield return www;
         icon.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
     }
+    
 
 }
